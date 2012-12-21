@@ -14,7 +14,7 @@ class OpenGraph(object):
     scrape = False
 
     def __init__(self, url="http://example.com", html=None, scrape=False, required_attrs = set(('title', 'type', 'image', 'url')), **kwargs):
-        # If scrape == True, then will try to fetch missing attribtues
+        # If scrape == True, then will try to fetch missing attributes
         # from the page's body
         self.scrape = scrape
         self.url = url
@@ -38,10 +38,17 @@ class OpenGraph(object):
         else:
             doc = html
         ogs = doc.html.head.findAll(property=re.compile(r'^og'))
+        # Add Twitter tags for Video Embedding Functionality
+        twitter = doc.html.head.findAll(attrs={"name" : re.compile(r'^twitter')})
         for og in ogs:
             if og.has_key(u'content'):
                 self.items[og[u'property'][3:]]=og[u'content']
-        
+        for tweet in twitter:
+            if tweet.has_key(u'content'):
+                self.items[tweet[u'name'][8:]]=tweet[u'content']
+            elif tweet.has_key(u'value'):
+                self.items[tweet[u'name'][8:]]=tweet[u'value']
+
         # Couldn't fetch all attrs from og tags, try scraping body
         if self.scrape:
             remaining_keys = self.required_attrs - set(self.items.viewkeys())
