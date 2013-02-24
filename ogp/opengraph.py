@@ -37,9 +37,9 @@ class OpenGraph(object):
             doc = BeautifulSoup(html)
         else:
             doc = html
-        ogs = doc.html.head.findAll(property=re.compile(r'^og'))
+        ogs = doc.html.findAll(property=re.compile(r'^og'))
         # Add Twitter tags for Video Embedding Functionality
-        twitter = doc.html.head.findAll(attrs={"name" : re.compile(r'^twitter')})
+        twitter = doc.html.findAll(attrs={"name" : re.compile(r'^twitter')})
         for og in ogs:
             if og.has_key(u'content'):
                 self.items[og[u'property'][3:]]=og[u'content']
