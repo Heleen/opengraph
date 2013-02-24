@@ -9,7 +9,7 @@ except IOError:
     long_description = ""
 
 
-version = '0.9.1'
+version = '0.9.1.1'
 
 setup(
     name='ogp',
